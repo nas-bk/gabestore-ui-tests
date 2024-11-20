@@ -1,0 +1,5 @@
+Filter,locator
+Жанры,#genre-filter
+Активация,#activation-filter
+Регион,#region-filter
+Еще,#characteristic-filter

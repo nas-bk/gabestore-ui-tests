@@ -1,5 +1,6 @@
 package tests;
 
+import com.codeborne.selenide.Condition;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
@@ -16,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Feature("Действия пользователя на главной странице сайта")
 public class HeaderPanelTests extends TestBase {
 
-    @ParameterizedTest(name = "Проверить, что открывается страница {1} после нажатия кнопки {0} в главном меню")
+    @ParameterizedTest(name = "Тестирование содержимого хэдер меню")
     @Owner("Bochkareva Anastasia")
     @Severity(SeverityLevel.NORMAL)
     @CsvFileSource(resources = "/data.csv", numLinesToSkip = 1)
@@ -32,15 +33,15 @@ public class HeaderPanelTests extends TestBase {
     @Test
     @Owner("Bochkareva Anastasia")
     @Severity(SeverityLevel.CRITICAL)
-    @DisplayName("Отображается панель автоподбора с играми соответвующему поисковому запросу")
+    @DisplayName("Тестирование поисковой строки магазина")
     void gameSearchTest() {
         String game = "Devil May Cry";
         mainPage.openPage()
                 .setSearchQuery(game)
                 .SEARCH_RESULT_WRAPPER.shouldHave(text(game));
 
-        step("Проверить, что панель автоподбора отображена и найдены игры содержащие запрос", () -> {
-                mainPage.SEARCH_RESULT_WRAPPER.shouldHave(text(game));
+        step("Проверить, что открылся popup с результатами поиска", () -> {
+                mainPage.SEARCH_RESULT_WRAPPER.shouldHave(Condition.text(game));
                 assertThat(mainPage.SEARCH_RESULT_WRAPPER.isEnabled()).isTrue();});
     }
 }

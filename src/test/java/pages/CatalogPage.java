@@ -37,7 +37,7 @@ public class CatalogPage {
         return this;
     }
 
-    @Step("Добавить случайную игру в израбнное")
+    @Step("Добавить игру в избранное")
     public CatalogPage addRandomGameToFavorites() {
         GAME_CATALOG
                 .get(getRandomNumber())
@@ -48,7 +48,7 @@ public class CatalogPage {
         return this;
     }
 
-    @Step("Выбрать случайный фильтр")
+    @Step("Выбрать фильтр")
     public CatalogPage setRandomFilter(String filter, String filter_locator) {
         FILTER_SELECT.findBy(text(filter)).click();
         ElementsCollection list = $(filter_locator).$$(FILTER_LIST);
@@ -56,7 +56,7 @@ public class CatalogPage {
         return this;
     }
 
-    @Step("Добавить случайную игру в карзину")
+    @Step("Добавить игру в корзину")
     public CatalogPage addRandomGameToCart() {
         GAME_CATALOG
                 .get(getRandomNumber())

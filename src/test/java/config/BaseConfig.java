@@ -21,7 +21,4 @@ public interface BaseConfig extends Config {
 
     @Key("isRemote")
     boolean isRemote();
-
-
-
 }

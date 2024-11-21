@@ -7,7 +7,7 @@ import org.aeonbits.owner.Config;
         "system:properties",
         "classpath:remote.properties"
 })
-public interface AuthConfig extends Config{
+public interface AuthConfig extends Config {
 
     @Key("remoteUrl")
     String getRemoteUrl();
@@ -15,5 +15,4 @@ public interface AuthConfig extends Config{
     String getLogin();
 
     String getPassword();
-
 }

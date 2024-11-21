@@ -9,10 +9,10 @@ import org.aeonbits.owner.Config;
 })
 public interface AuthConfig extends Config {
 
+    String login();
+
+    String password();
+
     @Key("remoteUrl")
     String getRemoteUrl();
-
-    String getLogin();
-
-    String getPassword();
 }

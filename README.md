@@ -38,7 +38,6 @@
 
 
 <a id="cases"></a>
-
 ## Реализованные тесты
 
 ### Автоматизированные тесты
@@ -58,7 +57,6 @@
 
 
 <a id="console"></a>
-
 ## Запуск тестов
 
 Для локального запуска используется команда:
@@ -95,7 +93,6 @@ gradle clean test -Denv=<env> -Dlogin=<login_Selenoid> -Dpassword=<password_Sele
 После выполнения сборки, результаты тестов станут доступны в Allure Report и Allure TestOps.
 
 <a id="allure"></a>
-
 ## Отчеты в <a target="_blank" href="https://jenkins.autotests.cloud/job/C29-bochkareva_a-gabestore-ui-tests/allure/">**Allure**</a>
 
 На главной странице Allure отчета возможно узнать основную информацию о сборке и тенденцию выполнения тестов за все запуски.
@@ -116,7 +113,6 @@ gradle clean test -Denv=<env> -Dlogin=<login_Selenoid> -Dpassword=<password_Sele
 ![allure](/images/screens/allure_attach.jpg)
 
 <a id="testops"></a>
-
 ## Интеграция с <a target="_blank" href="https://allure.autotests.cloud/project/4500/dashboards">**Allure TestOps**</a>
 
 ![allure](/images/screens/allure_testops.jpg)
@@ -126,10 +122,10 @@ gradle clean test -Denv=<env> -Dlogin=<login_Selenoid> -Dpassword=<password_Sele
 ![allure](/images/screens/auto_tests.jpg)
 
 Примеры ручных тест-кейсов
+
 ![allure](/images/screens/tests.jpg)
 
 <a id="telegram"></a>
-
 ## Уведомления в Telegram с использованием бота
 
 После завершения сборки Telegram бот автоматически обрабатывает и отправляет сообщение с отчетом о прогоне тестов.

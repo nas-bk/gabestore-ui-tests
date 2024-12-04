@@ -4,25 +4,20 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
+import static helpers.RandomNumberGenerator.getRandomNumber;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CatalogPage {
-    public final SelenideElement TITLE_PAGE = $(".b-title-with-filter h1"),
-            LOGIN_MENU = $(".b-login"),
-            CLEAR_FILTER_BUTTON = $(".js-clear-filter"),
-            GAME_COUNTER = $(".js-catalog-game-count"),
-            ADDITIONAL_FILTERS = $(".b-filter__hidden"),
-            CART = $(".b-cart");
-    public final ElementsCollection FILTER_SELECT = $$(".b-multiple-select"),
-            CART_LIST = $(".b-cart__list").$$(".shop-item-inline");
-    private final ElementsCollection GAME_CATALOG = $$(".b-catalog__wrapper .shop-item");
-    private final String FAVORITE_BUTTON_SELECTOR = ".shop-item__favorite",
-            FILTER_LIST = ".b-multiple-select__list-item",
-            ADD_TO_CART_BUT_LOCATOR = ".js-addToCart";
-    private final SelenideElement OPEN_FILTER_BUTTON = $(".b-filter__mainfilter .js-open-filter"),
-            OPEN_CART = $(".b-header__icons").$(".js-cart-icon");
+    private final SelenideElement titlePage = $(".b-title-with-filter h1"),
+            loginMenu = $(".b-login"),
+            filterCleanButton = $(".js-clear-filter"),
+            gameCounter = $(".js-catalog-game-count"),
+            additionalFilters = $(".b-filter__hidden"),
+            openFilterBtn = $(".b-filter__mainfilter .js-open-filter");
+    private final ElementsCollection filterSelect = $$(".b-multiple-select"),
+            gameCatalog = $$(".b-catalog__wrapper .shop-item");
 
 
     @Step("Открыть страницу с каталогом товаров")
@@ -33,15 +28,16 @@ public class CatalogPage {
 
     @Step("Нажать на кнопку 'Все фильтры' ")
     public CatalogPage openAllFilters() {
-        OPEN_FILTER_BUTTON.click();
+        openFilterBtn.click();
         return this;
     }
 
     @Step("Добавить игру в избранное")
     public CatalogPage addRandomGameToFavorites() {
-        GAME_CATALOG
-                .get(getRandomNumber())
-                .$(FAVORITE_BUTTON_SELECTOR)
+        String favoriteBtnSelector = ".shop-item__favorite";
+        gameCatalog
+                .get(getRandomNumber(5))
+                .$(favoriteBtnSelector)
                 .hover()
                 .shouldBe(enabled)
                 .click();
@@ -50,31 +46,51 @@ public class CatalogPage {
 
     @Step("Выбрать фильтр")
     public CatalogPage setRandomFilter(String filter, String filter_locator) {
-        FILTER_SELECT.findBy(text(filter)).click();
-        ElementsCollection list = $(filter_locator).$$(FILTER_LIST);
-        list.get(getRandomNumber()).hover().click();
+        String filterList = ".b-multiple-select__list-item";
+        filterSelect.findBy(text(filter)).click();
+        ElementsCollection list = $(filter_locator).$$(filterList);
+        list.get(getRandomNumber(5)).hover().click();
         return this;
     }
 
     @Step("Добавить игру в корзину")
     public CatalogPage addRandomGameToCart() {
-        GAME_CATALOG
-                .get(getRandomNumber())
-                .$(ADD_TO_CART_BUT_LOCATOR)
+        String addToCartBtn = ".js-addToCart";
+        gameCatalog
+                .get(getRandomNumber(5))
+                .$(addToCartBtn)
                 .hover()
                 .shouldBe(enabled)
                 .click();
         return this;
     }
 
-    @Step("Открыть корзину")
-    public CatalogPage openCart() {
-        OPEN_CART.click();
+    public String getQuantityOfGoods() {
+        return gameCounter.getAttribute("textContent");
+    }
+
+    public CatalogPage checkThatPageTitleMatches(String titlePage) {
+        assertThat(this.titlePage.getText()).isEqualTo(titlePage);
         return this;
     }
 
-    private Integer getRandomNumber() {
-        return (int) (Math.random() * 5);
+    public CatalogPage checkAuthFormIsOpen() {
+        assertThat(loginMenu.isDisplayed()).isTrue();
+        return this;
     }
 
+    public CatalogPage checkFilterCleanButtonIsVisible() {
+        filterCleanButton.shouldBe(visible);
+        return this;
+    }
+
+    public CatalogPage checkValueChange(String value) {
+        gameCounter.shouldNotHave(text(value));
+        return this;
+    }
+
+    public CatalogPage checkAdditionalFiltersIsEnabled() {
+        assertThat(additionalFilters.isEnabled()).isTrue();
+        return this;
+    }
 }

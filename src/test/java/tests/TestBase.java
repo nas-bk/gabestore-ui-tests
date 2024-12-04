@@ -8,17 +8,19 @@ import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import pages.CartPage;
 import pages.CatalogPage;
 import pages.MainPage;
 
 public class TestBase {
-    static WebDriverProvider driverConfig = new WebDriverProvider();
+    static final WebDriverProvider driverConfig = new WebDriverProvider();
     MainPage mainPage = new MainPage();
     CatalogPage catalogPage = new CatalogPage();
+    CartPage cartPage = new CartPage();
 
     @BeforeAll
     static void beforeAll() {
-        driverConfig.createWebDriver();
+        driverConfig.setConfiguration();
     }
 
     @BeforeEach

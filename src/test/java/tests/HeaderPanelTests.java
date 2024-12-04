@@ -1,6 +1,5 @@
 package tests;
 
-import com.codeborne.selenide.Condition;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
@@ -10,7 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
-import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Configuration.baseUrl;
+import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,8 +26,8 @@ public class HeaderPanelTests extends TestBase {
                 .openMenu()
                 .clickMenuItem(menuItem);
 
-        step("Название страницы соответствует {0} ", () ->
-                assertThat(catalogPage.TITLE_PAGE.getText()).isEqualTo(titlePage));
+        step("Название страницы соответствует " + titlePage, () ->
+                catalogPage.checkThatPageTitleMatches(titlePage));
     }
 
     @Test
@@ -37,11 +37,39 @@ public class HeaderPanelTests extends TestBase {
     void gameSearchTest() {
         String game = "Devil May Cry";
         mainPage.openPage()
-                .setSearchQuery(game)
-                .SEARCH_RESULT_WRAPPER.shouldHave(text(game));
+                .setSearchQuery(game);
 
         step("Проверить, что открылся popup с результатами поиска", () -> {
-                mainPage.SEARCH_RESULT_WRAPPER.shouldHave(Condition.text(game));
-                assertThat(mainPage.SEARCH_RESULT_WRAPPER.isEnabled()).isTrue();});
+            mainPage.checkPopupIsEnabled()
+                    .checkThatResultMatchesSearchQuery(game);
+        });
+    }
+
+    @Test
+    @Owner("Bochkareva Anastasia")
+    @Severity(SeverityLevel.NORMAL)
+    @DisplayName("Тестирование работы поиска при пустом поисковом запросе")
+    void unsuccessfulSearchWithEmptyQueryTest() {
+
+        mainPage.openPage()
+                .pressEnterOnSearchBar();
+
+        step("Проверить, что url страницы не изменился", () ->
+                assertThat(getWebDriver().getCurrentUrl()).isEqualTo(baseUrl + "/"));
+    }
+
+    @Test
+    @Owner("Bochkareva Anastasia")
+    @Severity(SeverityLevel.NORMAL)
+    @DisplayName("Тестирование открытие корзины без авторизации")
+    void cartOpenWithoutAuthTest() {
+
+        mainPage.openPage();
+        cartPage.openCart();
+
+        step("Проверить, что открылась страница корзины", () ->
+                assertThat(getWebDriver().getCurrentUrl()).isEqualTo(baseUrl + "/basket"));
+        step("Проверить, что корзина пустая", () ->
+                cartPage.checkCartIsEmpty());
     }
 }

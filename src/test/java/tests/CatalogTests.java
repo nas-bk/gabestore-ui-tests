@@ -9,10 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
 import static io.qameta.allure.Allure.step;
-import static org.assertj.core.api.Assertions.assertThat;
 
 @Feature("Действия пользователя в каталоге")
 public class CatalogTests extends TestBase {
@@ -26,7 +23,7 @@ public class CatalogTests extends TestBase {
                 .addRandomGameToFavorites();
 
         step("Проверить открытие формы Вход/Регистрации", () ->
-                assertThat(catalogPage.LOGIN_MENU.isDisplayed()).isTrue());
+                catalogPage.checkAuthFormIsOpen());
     }
 
     @ParameterizedTest(name = "Тестирование работы фильтра {0} ")
@@ -35,15 +32,15 @@ public class CatalogTests extends TestBase {
     @CsvFileSource(resources = "/filter.csv", numLinesToSkip = 1)
     void filterGameItemsTest(String filter, String locator) {
         catalogPage.openCatalog();
-        var countPrev = catalogPage.GAME_COUNTER.getAttribute("textContent");
+        var countPrev = catalogPage.getQuantityOfGoods();
         catalogPage.openAllFilters()
                 .setRandomFilter(filter, locator);
 
         step("Проверить, что отобразилась кнопка удаления фильтра", () ->
-                catalogPage.CLEAR_FILTER_BUTTON.shouldBe(visible));
+                catalogPage.checkFilterCleanButtonIsVisible());
 
-        step("Проверить, что изменилось количество игр в коталоге.", () ->
-                catalogPage.GAME_COUNTER.shouldNotHave(text(countPrev)));
+        step("Проверить, что изменилось количество игр в каталоге.", () ->
+                catalogPage.checkValueChange(countPrev));
     }
 
     @Test
@@ -56,7 +53,7 @@ public class CatalogTests extends TestBase {
                 .openAllFilters();
 
         step("Проверить, что открылась форма с дополнительными фильтрами", () ->
-                assertThat(catalogPage.ADDITIONAL_FILTERS.isEnabled()).isTrue());
+                catalogPage.checkAdditionalFiltersIsEnabled());
     }
 
     @Test
@@ -65,12 +62,13 @@ public class CatalogTests extends TestBase {
     @DisplayName("Тестирование добавления товара в корзину")
     void addGameToCart() {
         catalogPage.openCatalog()
-                .addRandomGameToCart()
-                .openCart();
+                .addRandomGameToCart();
+
+        cartPage.openCart();
 
         step("Проверить, что список товаров в корзине равен количеству добавленного товара", () -> {
-                catalogPage.CART.shouldNotHave(text("В вашей корзине еще ничего нет :( "));
-                assertThat(catalogPage.CART_LIST).hasSize(1);
+            cartPage.checkCartIsNotEmpty()
+                    .checkNumberOfItemsInCart(1);
         });
     }
 }

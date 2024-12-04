@@ -84,16 +84,13 @@ gradle clean test -Denv=<env> -Dlogin=<login_Selenoid> -Dpassword=<password_Sele
 
 ### Запуск в Jenkins
 
-Для запуска проекта через Jenkins была создана <a target="_blank" href="https://jenkins.autotests.cloud/job/C29-bochkareva_a-gabestore-ui-tests/">**задача**</a>. 
-Для запуска используете сборку с параметрами "Build with Parameters". 
+Для запуска проекта через Jenkins была создана <a target="_blank" href="https://jenkins.autotests.cloud/job/C29-bochkareva_a-gabestore-ui-tests/">**задача**</a>.
+Задание настроено на удаленный запуск.
+Для запуска используете кнопку Build Now/Собрать сейчас. 
 
 ![Jenkins_build](/images/screens/jenkins.jpg)
 
-Обязательно заполнить Login и Password от Selenoid, т.к. задание настроено на удаленный запуск. Затем нажать на кнопку Build.
-
-![Jenkins_build](/images/screens/BuildWithParam.jpg)
-
-После выполнения сборки, результаты тестов станут доступны в Allure Report и Allure TestOps.
+После выполнения сборки, результаты тестов будут доступны в Allure Report и Allure TestOps.
 
 <a id="allure"></a>
 ## Отчеты в <a target="_blank" href="https://jenkins.autotests.cloud/job/C29-bochkareva_a-gabestore-ui-tests/allure/">**Allure**</a>
@@ -102,7 +99,7 @@ gradle clean test -Denv=<env> -Dlogin=<login_Selenoid> -Dpassword=<password_Sele
 
 ![allure](/images/screens/allure.jpg)
 
-На странице Suites представлен список тестов с полной информацией (шаги, артефакты, продолжительность выполнения).
+На странице Suites представлен список тестов с описанием шагов, визуализацией результатов и с информацией о продолжительности выполнения.
 
 ![allure](/images/screens/allure_suites.jpg)
 
@@ -120,7 +117,7 @@ gradle clean test -Denv=<env> -Dlogin=<login_Selenoid> -Dpassword=<password_Sele
 
 ![allure](/images/screens/allure_testops.jpg)
 
-Написанный код теста импортируются в тест-кейсы проекта.
+Код тестов импортируется в тест-кейсы проекта.
 
 ![allure](/images/screens/auto_tests.jpg)
 
